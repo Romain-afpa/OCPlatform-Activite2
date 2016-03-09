@@ -131,6 +131,9 @@ class AdvertRepository extends EntityRepository
             ->getResult();
     }
 
+    /**
+     * @return QueryBuilder
+     */
     public function getPublishedQueryBuilder()
     {
         return $this
@@ -139,14 +142,17 @@ class AdvertRepository extends EntityRepository
             ->setParameter('published', true);
     }
 
+    /**
+     * @param $date
+     * @return mixed
+     */
     public function delOutdatedAdverts($date)
     {
-
-
         return $this
             ->createQueryBuilder('a')
             ->delete('OCPlatformBundle:Advert', 'a')
             ->where('a.updatedAt < :date')
+            ->andWhere('a.applications IS EMPTY')
             ->setParameter('date', $date)
             ->getQuery()
             ->execute();
