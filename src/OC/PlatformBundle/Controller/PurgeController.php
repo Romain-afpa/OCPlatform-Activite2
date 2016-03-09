@@ -12,9 +12,9 @@ class PurgeController extends Controller
      */
     public function purgeAction($days)
     {
-       $purger = $this->container->get('oc_platform.advert_purger');
+        $purger = $this->container->get('oc_platform.advert_purger');
 
-      echo $purger->purge($days);
+        $purger->purge($days);
 
         return new Response("<body>entités purgées</body>");
     }

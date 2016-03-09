@@ -138,6 +138,7 @@ class appDevDebugProjectContainer extends Container
             'monolog.logger.security' => 'getMonolog_Logger_SecurityService',
             'monolog.logger.templating' => 'getMonolog_Logger_TemplatingService',
             'oc_platform.advert_purger' => 'getOcPlatform_AdvertPurgerService',
+            'oc_platform.validator.antiflood' => 'getOcPlatform_Validator_AntifloodService',
             'profiler' => 'getProfilerService',
             'profiler_listener' => 'getProfilerListenerService',
             'property_accessor' => 'getPropertyAccessorService',
@@ -1729,6 +1730,19 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'oc_platform.validator.antiflood' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return OC\PlatformBundle\Validator\AntifloodValidator A OC\PlatformBundle\Validator\AntifloodValidator instance.
+     */
+    protected function getOcPlatform_Validator_AntifloodService()
+    {
+        return $this->services['oc_platform.validator.antiflood'] = new \OC\PlatformBundle\Validator\AntifloodValidator($this->get('request_stack'), $this->get('doctrine.orm.default_entity_manager'));
+    }
+
+    /**
      * Gets the 'profiler' service.
      *
      * This service is shared.
@@ -3282,7 +3296,7 @@ class appDevDebugProjectContainer extends Container
     {
         $this->services['validator.builder'] = $instance = \Symfony\Component\Validator\Validation::createValidatorBuilder();
 
-        $instance->setConstraintValidatorFactory(new \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory($this, array('validator.expression' => 'validator.expression', 'Symfony\\Component\\Validator\\Constraints\\EmailValidator' => 'validator.email', 'security.validator.user_password' => 'security.validator.user_password', 'doctrine.orm.validator.unique' => 'doctrine.orm.validator.unique')));
+        $instance->setConstraintValidatorFactory(new \Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory($this, array('validator.expression' => 'validator.expression', 'Symfony\\Component\\Validator\\Constraints\\EmailValidator' => 'validator.email', 'security.validator.user_password' => 'security.validator.user_password', 'doctrine.orm.validator.unique' => 'doctrine.orm.validator.unique', 'oc_platform_antiflood' => 'oc_platform.validator.antiflood')));
         $instance->setTranslator($this->get('translator.default'));
         $instance->setTranslationDomain('validators');
         $instance->addXmlMappings(array(0 => 'C:\\wamp\\www\\OCPlatform\\vendor\\symfony\\symfony\\src\\Symfony\\Component\\Form/Resources/config/validation.xml'));

@@ -2134,6 +2134,7 @@
               <argument key="Symfony\Component\Validator\Constraints\EmailValidator">validator.email</argument>
               <argument key="security.validator.user_password">security.validator.user_password</argument>
               <argument key="doctrine.orm.validator.unique">doctrine.orm.validator.unique</argument>
+              <argument key="oc_platform_antiflood">oc_platform.validator.antiflood</argument>
             </argument>
           </service>
         </argument>
@@ -3205,6 +3206,11 @@
       <argument type="service" id="security.role_hierarchy" on-invalid="null"/>
     </service>
     <service id="oc_platform.advert_purger" class="OC\PlatformBundle\Purger\OCPurger">
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+    </service>
+    <service id="oc_platform.validator.antiflood" class="OC\PlatformBundle\Validator\AntifloodValidator">
+      <tag name="validator.constraint_validator" alias="oc_platform_antiflood"/>
+      <argument type="service" id="request_stack"/>
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
     </service>
     <service id="stof_doctrine_extensions.uploadable.manager" class="Stof\DoctrineExtensionsBundle\Uploadable\UploadableManager">

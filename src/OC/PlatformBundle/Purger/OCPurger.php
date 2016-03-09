@@ -17,7 +17,7 @@ class OCPurger
         $repo = $this->em->getRepository('OCPlatformBundle:Advert');
 
         $date = date_sub(new \DateTime(), date_interval_create_from_date_string($days." days"));
-var_dump($date);
+
         $repo->delOutdatedAdverts($date);
     }
 }
